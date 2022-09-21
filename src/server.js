@@ -1,7 +1,7 @@
 /** @format */
 
 import express from "express";
-import { userRouter, bookRouter } from "../index.js";
+import { userRouter, reservationsRouter } from "../index.js";
 import cors from "cors";
 // import bookRouter from "../index.js";
 import listEndpoints from "express-list-endpoints";
@@ -15,7 +15,7 @@ server.use(express.json());
 //**** Endpoints ******
 
 server.use("/users", userRouter);
-server.use("/book", bookRouter);
+server.use("/reservations", reservationsRouter);
 
 // showing the list end points table
 console.table(listEndpoints(server));
@@ -23,3 +23,4 @@ console.table(listEndpoints(server));
 server.listen(port, () => {
   console.log("Your server is running on port " + port);
 });
+// server link : http://localhost:3001/

@@ -7,16 +7,26 @@ import { dirname, join } from "path";
 import uniqid from "uniqid";
 
 const userRouter = express.Router();
-const bookRouter = express.Router();
+const reservationsRouter = express.Router();
 
 // File loc.
 const currentPath = fileURLToPath(import.meta.url);
 const currentFolderPath = dirname(currentPath);
+// document specific path
 const userJSONPath = join(currentFolderPath, "src", "data", "user.json");
+const reservationsJSONPath = join(
+  currentFolderPath,
+  "src",
+  "data",
+  "reservations.json"
+);
 
-// Reading the file
+// Reading the  user file
 const userJsonFile = fs.readFileSync(userJSONPath);
 const userDataRead = JSON.parse(userJsonFile.toString());
+// Reading the reservations file
+const reservationsJsonFile = fs.readFileSync(reservationsJSONPath);
+const reservationsDataRead = JSON.parse(reservationsJsonFile.toString());
 
 // User router
 
@@ -71,14 +81,38 @@ userRouter.delete("/:id", (req, res) => {
 
 // Book router
 
-bookRouter.get("/", (req, res) => {});
+reservationsRouter.get("/", (req, res) => {
+  console.log("url is : -> ", req.url);
 
-bookRouter.get("/:id", (req, res) => {});
+  console.log({
+    currentPath,
+    currentFolderPath,
+    metaUrl: import.meta.url,
+    currentFolderPath,
+    reservationsJSONPath,
+  });
 
-bookRouter.post("/", (req, res) => {});
+  console.log(reservationsDataRead);
 
-bookRouter.put("/:id", (req, res) => {});
+  res.send(reservationsDataRead);
+});
 
-bookRouter.delete("/:id", (req, res) => {});
+reservationsRouter.get("/:id", (req, res) => {});
 
-export { userRouter, bookRouter };
+reservationsRouter.post("/", (req, res) => {
+  console.log(req.body);
+  const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+  res.send(newUser);
+
+  //  changing the file
+  reservationsDataRead.push(newUser);
+  console.log(reservationsDataRead);
+  // writing the file back
+  fs.writeFileSync(reservationsJSONPath, JSON.stringify(reservationsDataRead));
+});
+
+reservationsRouter.put("/:id", (req, res) => {});
+
+reservationsRouter.delete("/:id", (req, res) => {});
+
+export { userRouter, reservationsRouter };
