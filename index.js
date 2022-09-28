@@ -28,7 +28,7 @@ const userDataRead = JSON.parse(userJsonFile.toString());
 const reservationsJsonFile = fs.readFileSync(reservationsJSONPath);
 const reservationsDataRead = JSON.parse(reservationsJsonFile.toString());
 
-// User router
+// User router paths
 
 userRouter.get("/", (req, res) => {
   console.log("url is : -> ", req.url);
@@ -37,7 +37,6 @@ userRouter.get("/", (req, res) => {
     currentPath,
     currentFolderPath,
     metaUrl: import.meta.url,
-    currentFolderPath,
     userJSONPath,
   });
 
@@ -79,7 +78,7 @@ userRouter.delete("/:id", (req, res) => {
   res.send("Deleted the user: ", req.params.id);
 });
 
-// Book router
+// Reservation router paths
 
 reservationsRouter.get("/", (req, res) => {
   console.log("url is : -> ", req.url);
@@ -97,7 +96,10 @@ reservationsRouter.get("/", (req, res) => {
   res.send(reservationsDataRead);
 });
 
-reservationsRouter.get("/:id", (req, res) => {});
+reservationsRouter.get("/:id", (req, res) => {
+  const reserve = reservationsDataRead.find((u) => u._id === req.params.id);
+  res.send(reserve);
+});
 
 reservationsRouter.post("/", (req, res) => {
   console.log(req.body);
@@ -111,8 +113,27 @@ reservationsRouter.post("/", (req, res) => {
   fs.writeFileSync(reservationsJSONPath, JSON.stringify(reservationsDataRead));
 });
 
-reservationsRouter.put("/:id", (req, res) => {});
+reservationsRouter.put("/:id", (req, res) => {
+  const newReserve = reservationsDataRead.filter(
+    (u) => u._id !== req.params.id
+  );
+  const changeReserve = {
+    ...req.body,
+    _id: req.params.id,
+    createdAt: new Date(),
+  };
+  newReserve.push(changeReserve);
+  //   Place back
+  fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
+  res.send("Updated!!");
+});
 
-reservationsRouter.delete("/:id", (req, res) => {});
+reservationsRouter.delete("/:id", (req, res) => {
+  const newReserve = reservationsDataRead.filter(
+    (u) => u._id !== req.params.id
+  );
+  fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
+  res.send("Deleted the Reservation: ", req.params.id);
+});
 
 export { userRouter, reservationsRouter };
