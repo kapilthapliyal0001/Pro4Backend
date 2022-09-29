@@ -39,15 +39,24 @@ const movieDataRead = JSON.parse(movieJsonFile.toString());
 userRouter.get("/", (req, res) => {
   console.log("url is : -> ", req.url);
 
-  console.log({
-    currentPath,
-    currentFolderPath,
-    metaUrl: import.meta.url,
-    userJSONPath,
-  });
+  // console.log({
+  //   currentPath,
+  //   currentFolderPath,
+  //   metaUrl: import.meta.url,
+  //   userJSONPath,
+  // });
 
-  console.log(userDataRead);
+  // console.log(userDataRead);
 
+  // console.log(req.query, " This is the query document");
+  if (req.query && req.query.gender) {
+    const newUserData = userDataRead.filter(
+      (user) =>
+        user.hasOwnProperty("gender") && user.gender === req.query.gender
+    );
+    // console.log(newUserData);
+    res.send(newUserData);
+  }
   res.send(userDataRead);
 });
 
@@ -148,15 +157,15 @@ reservationsRouter.delete("/:id", (req, res) => {
 movieRouter.get("/", (req, res) => {
   console.log("url is : -> ", req.url);
 
-  console.log({
-    currentPath,
-    currentFolderPath,
-    metaUrl: import.meta.url,
-    currentFolderPath,
-    MovieJSONPath,
-  });
+  // console.log({
+  //   currentPath,
+  //   currentFolderPath,
+  //   metaUrl: import.meta.url,
+  //   currentFolderPath,
+  //   MovieJSONPath,
+  // });
 
-  console.log(movieDataRead);
+  // console.log(movieDataRead);
 
   res.send(movieDataRead);
 });

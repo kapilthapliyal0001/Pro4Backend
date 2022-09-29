@@ -9,14 +9,32 @@ import listEndpoints from "express-list-endpoints";
 const server = express();
 const port = 3001;
 
+// ************ Middleware *****************
+const loggerMiddleware = (req, res, next) => {
+  console.log(`Request : ->  ${req.method}  ${req.url} --- ${new Date()}`);
+  next();
+};
+
+const loggerMiddleware2 = () => {
+  console.log(
+    `Request : ->  ${req.method}  ${
+      req.url
+    } --- ${new Date()} for the movie middleware`
+  );
+  next();
+};
+
+// All are Global Middleware
+
 server.use(cors());
+server.use(loggerMiddleware);
 server.use(express.json());
 
 //**** Endpoints ******
 
 server.use("/users", userRouter);
 server.use("/reservations", reservationsRouter);
-server.use("/movies", movieRouter);
+server.use("/movies", loggerMiddleware2, movieRouter);
 
 // showing the list end points table
 console.table(listEndpoints(server));
