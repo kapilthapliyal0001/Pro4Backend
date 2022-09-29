@@ -1,7 +1,7 @@
 /** @format */
 
 import express from "express";
-import { userRouter, reservationsRouter } from "../index.js";
+import { userRouter, reservationsRouter, movieRouter } from "../index.js";
 import cors from "cors";
 // import bookRouter from "../index.js";
 import listEndpoints from "express-list-endpoints";
@@ -16,6 +16,7 @@ server.use(express.json());
 
 server.use("/users", userRouter);
 server.use("/reservations", reservationsRouter);
+server.use("/movies", movieRouter);
 
 // showing the list end points table
 console.table(listEndpoints(server));

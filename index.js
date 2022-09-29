@@ -6,8 +6,10 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import uniqid from "uniqid";
 
+// Routes
 const userRouter = express.Router();
 const reservationsRouter = express.Router();
+const movieRouter = express.Router();
 
 // File loc.
 const currentPath = fileURLToPath(import.meta.url);
@@ -20,6 +22,7 @@ const reservationsJSONPath = join(
   "data",
   "reservations.json"
 );
+const MovieJSONPath = join(currentFolderPath, "src", "data", "Movie.json");
 
 // Reading the  user file
 const userJsonFile = fs.readFileSync(userJSONPath);
@@ -27,6 +30,9 @@ const userDataRead = JSON.parse(userJsonFile.toString());
 // Reading the reservations file
 const reservationsJsonFile = fs.readFileSync(reservationsJSONPath);
 const reservationsDataRead = JSON.parse(reservationsJsonFile.toString());
+// Reading the movie file
+const movieJsonFile = fs.readFileSync(MovieJSONPath);
+const movieDataRead = JSON.parse(movieJsonFile.toString());
 
 // User router paths
 
@@ -136,4 +142,45 @@ reservationsRouter.delete("/:id", (req, res) => {
   res.send("Deleted the Reservation: ", req.params.id);
 });
 
-export { userRouter, reservationsRouter };
+// Movie route paths
+
+// All movies get route
+movieRouter.get("/", (req, res) => {
+  console.log("url is : -> ", req.url);
+
+  console.log({
+    currentPath,
+    currentFolderPath,
+    metaUrl: import.meta.url,
+    currentFolderPath,
+    MovieJSONPath,
+  });
+
+  console.log(movieDataRead);
+
+  res.send(movieDataRead);
+});
+
+// get movie by id
+movieRouter.get("/:name", (req, res) => {
+  // finding the user
+  const movie = movieDataRead.find((u) => u.name === req.params.name);
+  res.send(movie);
+
+  console.log("The movies: ", movieDataRead);
+  console.log("The movie is: ", movie);
+});
+
+// post method movie route
+movieRouter.post("/", (req, res) => {
+  console.log(req.body);
+  const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+  res.send(newUser);
+
+  //  changing the file
+  movieDataRead.push(newUser);
+  console.log(movieDataRead);
+  // writing the file back
+  fs.writeFileSync(MovieJSONPath, JSON.stringify(movieDataRead));
+});
+export { userRouter, reservationsRouter, movieRouter };
