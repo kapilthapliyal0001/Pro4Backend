@@ -2,6 +2,11 @@
 
 import express from "express";
 import { userRouter, reservationsRouter, movieRouter } from "../index.js";
+import {
+  errorMiddleware,
+  notFoundMiddleware,
+  badRequestMiddleware,
+} from "./errorMiddlewares.js";
 import cors from "cors";
 // import bookRouter from "../index.js";
 import listEndpoints from "express-list-endpoints";
@@ -39,6 +44,11 @@ server.use(express.json());
 server.use("/users", userRouter);
 server.use("/reservations", reservationsRouter);
 server.use("/movies", loggerMiddleware2, movieRouter); // the logger middleware should come in between
+
+// Error Middleware
+server.use(errorMiddleware);
+server.use(notFoundMiddleware);
+server.use(badRequestMiddleware);
 
 // showing the list end points table
 console.table(listEndpoints(server));
