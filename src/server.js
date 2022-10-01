@@ -11,13 +11,17 @@ const port = 3001;
 
 // ************ Middleware *****************
 const loggerMiddleware = (req, res, next) => {
-  console.log(`Request : ->  ${req.method}  ${req.url} --- ${new Date()}`);
+  console.log(
+    `LOGGER MIDDLEWARE 1 Request : ->  ${req.method}  ${
+      req.url
+    } --- ${new Date()}`
+  );
   next();
 };
 
-const loggerMiddleware2 = () => {
+const loggerMiddleware2 = (req, res, next) => {
   console.log(
-    `Request : ->  ${req.method}  ${
+    `LOGGER MIDDLEWARE 2 Request : ->  ${req.method}  ${
       req.url
     } --- ${new Date()} for the movie middleware`
   );
@@ -34,7 +38,7 @@ server.use(express.json());
 
 server.use("/users", userRouter);
 server.use("/reservations", reservationsRouter);
-server.use("/movies", loggerMiddleware2, movieRouter);
+server.use("/movies", loggerMiddleware2, movieRouter); // the logger middleware should come in between
 
 // showing the list end points table
 console.table(listEndpoints(server));
