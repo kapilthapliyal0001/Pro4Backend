@@ -11,7 +11,7 @@ export const errorMiddleware = (err, req, res, next) => {
 
 export const notFoundMiddleware = (err, req, res, next) => {
   if (err.status === 404) {
-    res.status(404).send(err.message);
+    res.status(404).send(err);
   } else {
     next(err);
   }
@@ -19,7 +19,7 @@ export const notFoundMiddleware = (err, req, res, next) => {
 
 export const badRequestMiddleware = (err, req, res, next) => {
   if (err.status === 400) {
-    res.status(400).send(err.message);
+    res.status(400).send(err.errorList.errors); // can ber err.errorList
   } else {
     next(err);
   }

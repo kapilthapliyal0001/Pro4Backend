@@ -4,7 +4,7 @@ import { body } from "express-validator";
 
 export const userValidation = [
   body("name").exists().withMessage("Name is a mandatory field!!"),
-  body("surname").exists().withMessage("Name is a mandatory field!!"),
+  body("surname").exists().withMessage("Surname is a mandatory field!!"),
   body("age")
     .exists()
     .withMessage("age is a mandatory field!!")

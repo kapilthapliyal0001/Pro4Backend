@@ -92,7 +92,7 @@ userRouter.post("/", userValidation, (req, res, next) => {
     }
   } else {
     console.log("Here are the errors : ", error);
-    next(createError(400, "Bad Request"));
+    next(createError(400, { errorList: error }));
   }
 });
 

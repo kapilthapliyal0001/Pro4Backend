@@ -70,5 +70,13 @@
     "gender": "Female",
     "_id": "3qmt7c2xl8n5ayjc",
     "createdAt": "2022-09-29T14:22:16.151Z"
+  },
+  {
+    "name": "Kapil",
+    "surname": "Thapliyal",
+    "age": 23,
+    "email": "kaodi@gmail.com",
+    "_id": "3qmt7sy5l8rv1dsd",
+    "createdAt": "2022-10-02T21:33:44.076Z"
   }
 ]
