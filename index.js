@@ -6,6 +6,8 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import uniqid from "uniqid";
 import createError from "http-errors";
+import { userValidation } from "./src/validation.js";
+import { validationResult } from "express-validator";
 
 // Routes
 const userRouter = express.Router();
@@ -72,19 +74,25 @@ userRouter.get("/:id", (req, res, next) => {
   }
 });
 
-userRouter.post("/", (req, res, next) => {
-  try {
-    console.log(req.body);
-    const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
-    res.send(newUser);
+userRouter.post("/", userValidation, (req, res, next) => {
+  const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
+  if (error.isEmpty()) {
+    try {
+      console.log(req.body);
+      const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+      res.send(newUser);
 
-    //  changing the file
-    userDataRead.push(newUser);
-    console.log(userDataRead);
-    // writing the file back
-    fs.writeFileSync(userJSONPath, JSON.stringify(userDataRead));
-  } catch (error) {
-    next(error);
+      //  changing the file
+      userDataRead.push(newUser);
+      console.log(userDataRead);
+      // writing the file back
+      fs.writeFileSync(userJSONPath, JSON.stringify(userDataRead));
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    console.log("Here are the errors : ", error);
+    next(createError(400, "Bad Request"));
   }
 });
 
