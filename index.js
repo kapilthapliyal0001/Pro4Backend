@@ -85,7 +85,7 @@ userRouter.get("/:id", (req, res, next) => {
   }
 });
 
-userRouter.post("/", userValidation, (req, res, next) => {
+userRouter.post("/", userValidation, async (req, res, next) => {
   const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
   if (error.isEmpty()) {
     try {
@@ -97,7 +97,7 @@ userRouter.post("/", userValidation, (req, res, next) => {
       getUsers.push(newUser);
       console.log(getUsers);
       // writing the file back
-      fs.writeFileSync(userJSONPath, JSON.stringify(getUsers));
+      await writeUsers(getUsers);
     } catch (error) {
       next(error);
     }
