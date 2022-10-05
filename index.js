@@ -27,30 +27,41 @@ const reservationsJSONPath = join(
 );
 const MovieJSONPath = join(currentFolderPath, "src", "data", "Movie.json");
 
+// files from the fs-async folder
+import {
+  getUsers,
+  getMovies,
+  getReservations,
+  writeUsers,
+  writeMovies,
+  writeReservations,
+} from "./src/lib/fs-tools.js";
+
 // Reading the  user file
-const userJsonFile = fs.readFileSync(userJSONPath);
-const userDataRead = JSON.parse(userJsonFile.toString());
+// const userJsonFile = fs.readFileSync(userJSONPath);
+// const userDataRead = JSON.parse(userJsonFile.toString());
 // Reading the reservations file
-const reservationsJsonFile = fs.readFileSync(reservationsJSONPath);
-const reservationsDataRead = JSON.parse(reservationsJsonFile.toString());
+// const reservationsJsonFile = fs.readFileSync(reservationsJSONPath);
+// const reservationsDataRead = JSON.parse(reservationsJsonFile.toString());
 // Reading the movie file
-const movieJsonFile = fs.readFileSync(MovieJSONPath);
-const movieDataRead = JSON.parse(movieJsonFile.toString());
+// const movieJsonFile = fs.readFileSync(MovieJSONPath);
+// const movieDataRead = JSON.parse(movieJsonFile.toString());
 
 // User router paths
 
-userRouter.get("/", (req, res, next) => {
+userRouter.get("/", async (req, res, next) => {
   try {
+    const users = await getUsers();
     console.log("url is : -> ", req.url);
     if (req.query && req.query.gender) {
-      const newUserData = userDataRead.filter(
+      const newUserData = users.filter(
         (user) =>
           user.hasOwnProperty("gender") && user.gender === req.query.gender
       );
-      // console.log(newUserData);
+      console.log(newUserData);
       res.send(newUserData);
     }
-    res.send(userDataRead);
+    res.send(users);
   } catch (error) {
     next(error);
   }
@@ -59,7 +70,7 @@ userRouter.get("/", (req, res, next) => {
 userRouter.get("/:id", (req, res, next) => {
   // finding the user
   try {
-    const user = userDataRead.find((u) => u._id === req.params.id);
+    const user = getUsers.find((u) => u._id === req.params.id);
     if (user) {
       res.send(user);
     } else {
@@ -83,10 +94,10 @@ userRouter.post("/", userValidation, (req, res, next) => {
       res.send(newUser);
 
       //  changing the file
-      userDataRead.push(newUser);
-      console.log(userDataRead);
+      getUsers.push(newUser);
+      console.log(getUsers);
       // writing the file back
-      fs.writeFileSync(userJSONPath, JSON.stringify(userDataRead));
+      fs.writeFileSync(userJSONPath, JSON.stringify(getUsers));
     } catch (error) {
       next(error);
     }
@@ -98,7 +109,7 @@ userRouter.post("/", userValidation, (req, res, next) => {
 
 userRouter.put("/:id", (req, res, next) => {
   try {
-    const newUsers = userDataRead.filter((u) => u._id !== req.params.id);
+    const newUsers = getUsers.filter((u) => u._id !== req.params.id);
     const changeUser = {
       ...req.body,
       _id: req.params.id,
@@ -115,7 +126,7 @@ userRouter.put("/:id", (req, res, next) => {
 
 userRouter.delete("/:id", (req, res, next) => {
   try {
-    const newUsers = userDataRead.filter((u) => u._id !== req.params.id);
+    const newUsers = getUsers.filter((u) => u._id !== req.params.id);
     fs.writeFileSync(userJSONPath, JSON.stringify(newUsers));
     res.send("Deleted the user: ", req.params.id);
   } catch (error) {
