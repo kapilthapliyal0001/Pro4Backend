@@ -90,12 +90,14 @@ userRouter.post("/", userValidation, async (req, res, next) => {
   if (error.isEmpty()) {
     try {
       console.log(req.body);
+      const users = await getUsers();
       const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+      console.log(newUser);
+      await writeUsers(userJSONPath, newUser);
       res.send(newUser);
 
       //  changing the file
-      getUsers.push(newUser);
-      console.log(getUsers);
+      console.log(users);
       // writing the file back
       await writeUsers(getUsers);
     } catch (error) {
@@ -136,37 +138,37 @@ userRouter.delete("/:id", (req, res, next) => {
 
 // Reservation router paths
 
-reservationsRouter.get("/", (req, res) => {
-  console.log("url is : -> ", req.url);
-
-  console.log({
-    currentPath,
-    currentFolderPath,
-    metaUrl: import.meta.url,
-    currentFolderPath,
-    reservationsJSONPath,
-  });
-
-  console.log(reservationsDataRead);
-
-  res.send(reservationsDataRead);
+reservationsRouter.get("/", async (req, res, next) => {
+  try {
+    const reservations = await getReservations();
+    res.send(reservations);
+  } catch (error) {
+    next(error);
+  }
 });
 
-reservationsRouter.get("/:id", (req, res) => {
-  const reserve = reservationsDataRead.find((u) => u._id === req.params.id);
-  res.send(reserve);
+reservationsRouter.get("/:id", async (req, res) => {
+  try {
+    const reservations = await getReservations();
+    const reserve = reservations.find((u) => u._id === req.params.id);
+    res.send(reserve);
+  } catch (error) {
+    next(error);
+  }
 });
 
-reservationsRouter.post("/", (req, res) => {
-  console.log(req.body);
-  const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
-  res.send(newUser);
-
-  //  changing the file
-  reservationsDataRead.push(newUser);
-  console.log(reservationsDataRead);
-  // writing the file back
-  fs.writeFileSync(reservationsJSONPath, JSON.stringify(reservationsDataRead));
+reservationsRouter.post("/", async (req, res, next) => {
+  try {
+    const reservations = await getReservations();
+    const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+    //  changing the file
+    reservations.push(newUser);
+    // writing the file back
+    await writeReservations(reservationsJSONPath, reservations);
+    res.send(newUser);
+  } catch (error) {
+    next(error);
+  }
 });
 
 reservationsRouter.put("/:id", (req, res) => {

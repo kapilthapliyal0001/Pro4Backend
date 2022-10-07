@@ -1,6 +1,5 @@
 /** @format */
 
-import { write } from "fs";
 import fs from "fs-extra";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
