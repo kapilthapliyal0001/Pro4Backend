@@ -29,3 +29,6 @@ export const writeUsers = (content) => writeJSON(userJSONPath, content);
 export const writeMovies = (content) => writeJSON(MovieJSONPath, content);
 export const writeReservations = (content) =>
   writeJSON(ReservationJSONPath, content);
+
+export const getCurrentFolderPath = (currenFile) =>
+  dirname(fileURLToPath(currenFile));
