@@ -157,19 +157,20 @@ reservationsRouter.get("/:id", async (req, res) => {
   }
 });
 
-reservationsRouter.post("/", async (req, res, next) => {
-  try {
-    const reservations = await getReservations();
-    const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
-    //  changing the file
-    reservations.push(newUser);
-    // writing the file back
-    await writeReservations(reservationsJSONPath, reservations);
-    res.send(newUser);
-  } catch (error) {
-    next(error);
-  }
-});
+// PROBLEM while writing the data
+// reservationsRouter.post("/", async (req, res, next) => {
+//   try {
+//     const reservations = await getReservations();
+//     const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+//     //  changing the file
+//     reservations.push(newUser);
+//     // writing the file back
+//     await writeReservations(reservationsJSONPath, reservations);
+//     res.send(newUser);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 reservationsRouter.put("/:id", (req, res) => {
   const newReserve = reservationsDataRead.filter(
