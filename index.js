@@ -172,20 +172,21 @@ reservationsRouter.get("/:id", async (req, res) => {
 //   }
 // });
 
-reservationsRouter.put("/:id", (req, res) => {
-  const newReserve = reservationsDataRead.filter(
-    (u) => u._id !== req.params.id
-  );
-  const changeReserve = {
-    ...req.body,
-    _id: req.params.id,
-    createdAt: new Date(),
-  };
-  newReserve.push(changeReserve);
-  //   Place back
-  fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
-  res.send("Updated!!");
-});
+// issues with PUT
+// reservationsRouter.put("/:id", (req, res) => {
+//   const newReserve = reservationsDataRead.filter(
+//     (u) => u._id !== req.params.id
+//   );
+//   const changeReserve = {
+//     ...req.body,
+//     _id: req.params.id,
+//     createdAt: new Date(),
+//   };
+//   newReserve.push(changeReserve);
+//   //   Place back
+//   fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
+//   res.send("Updated!!");
+// });
 
 reservationsRouter.delete("/:id", (req, res) => {
   const newReserve = reservationsDataRead.filter(
