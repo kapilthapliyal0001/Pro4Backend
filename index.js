@@ -48,7 +48,7 @@ import {
 // const movieDataRead = JSON.parse(movieJsonFile.toString());
 
 // User router paths
-
+//  need to chekc theh rout efor the nec vlvertl check it rihg ton ow
 userRouter.get("/", async (req, res, next) => {
   try {
     const users = await getUsers();
@@ -85,29 +85,30 @@ userRouter.get("/:id", (req, res, next) => {
   }
 });
 
-userRouter.post("/", userValidation, async (req, res, next) => {
-  const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
-  if (error.isEmpty()) {
-    try {
-      console.log(req.body);
-      const users = await getUsers();
-      const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
-      console.log(newUser);
-      await writeUsers(userJSONPath, newUser);
-      res.send(newUser);
+// error in post
+// userRouter.post("/", userValidation, async (req, res, next) => {
+//   const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
+//   if (error.isEmpty()) {
+//     try {
+//       console.log(req.body);
+//       const users = await getUsers();
+//       const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+//       console.log(newUser);
+//       await writeUsers(userJSONPath, newUser);
+//       res.send(newUser);
 
-      //  changing the file
-      console.log(users);
-      // writing the file back
-      await writeUsers(getUsers);
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    console.log("Here are the errors : ", error);
-    next(createError(400, { errorList: error }));
-  }
-});
+//       //  changing the file
+//       console.log(users);
+//       // writing the file back
+//       await writeUsers(getUsers);
+//     } catch (error) {
+//       next(error);
+//     }
+//   } else {
+//     console.log("Here are the errors : ", error);
+//     next(createError(400, { errorList: error }));
+//   }
+// });
 
 userRouter.put("/:id", (req, res, next) => {
   try {
