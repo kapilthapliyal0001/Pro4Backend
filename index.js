@@ -48,6 +48,10 @@ import {
 // const movieDataRead = JSON.parse(movieJsonFile.toString());
 
 // User router paths
+<<<<<<< HEAD
+=======
+//  need to chekc theh rout efor the nec vlvertl check it rihg ton ow
+>>>>>>> e0854bbf887b4065c1e56d2027f78d318b02e244
 userRouter.get("/", async (req, res, next) => {
   try {
     const users = await getUsers();
@@ -84,6 +88,7 @@ userRouter.get("/:id", (req, res, next) => {
   }
 });
 
+<<<<<<< HEAD
 error in post;
 userRouter.post("/", userValidation, async (req, res, next) => {
   const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
@@ -108,6 +113,32 @@ userRouter.post("/", userValidation, async (req, res, next) => {
     next(createError(400, { errorList: error }));
   }
 });
+=======
+// error in post
+// userRouter.post("/", userValidation, async (req, res, next) => {
+//   const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
+//   if (error.isEmpty()) {
+//     try {
+//       console.log(req.body);
+//       const users = await getUsers();
+//       const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+//       console.log(newUser);
+//       await writeUsers(userJSONPath, newUser);
+//       res.send(newUser);
+
+//       //  changing the file
+//       console.log(users);
+//       // writing the file back
+//       await writeUsers(getUsers);
+//     } catch (error) {
+//       next(error);
+//     }
+//   } else {
+//     console.log("Here are the errors : ", error);
+//     next(createError(400, { errorList: error }));
+//   }
+// });
+>>>>>>> e0854bbf887b4065c1e56d2027f78d318b02e244
 
 userRouter.put("/:id", (req, res, next) => {
   try {
@@ -158,6 +189,7 @@ reservationsRouter.get("/:id", async (req, res) => {
 });
 
 // PROBLEM while writing the data
+<<<<<<< HEAD
 reservationsRouter.post("/", async (req, res, next) => {
   try {
     const reservations = await getReservations();
@@ -171,6 +203,21 @@ reservationsRouter.post("/", async (req, res, next) => {
     next(error);
   }
 });
+=======
+// reservationsRouter.post("/", async (req, res, next) => {
+//   try {
+//     const reservations = await getReservations();
+//     const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
+//     //  changing the file
+//     reservations.push(newUser);
+//     // writing the file back
+//     await writeReservations(reservationsJSONPath, reservations);
+//     res.send(newUser);
+//   } catch (error) {
+//     next(error);
+//   }
+// });
+>>>>>>> e0854bbf887b4065c1e56d2027f78d318b02e244
 
 // issues with PUT
 // reservationsRouter.put("/:id", (req, res) => {
