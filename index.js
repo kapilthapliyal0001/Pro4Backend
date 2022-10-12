@@ -48,7 +48,6 @@ import {
 // const movieDataRead = JSON.parse(movieJsonFile.toString());
 
 // User router paths
-
 userRouter.get("/", async (req, res, next) => {
   try {
     const users = await getUsers();
@@ -85,6 +84,7 @@ userRouter.get("/:id", (req, res, next) => {
   }
 });
 
+error in post;
 userRouter.post("/", userValidation, async (req, res, next) => {
   const error = validationResult(req); // is the list of errors coming from the user validation coming from the uservalidation middleware
   if (error.isEmpty()) {
@@ -157,6 +157,7 @@ reservationsRouter.get("/:id", async (req, res) => {
   }
 });
 
+// PROBLEM while writing the data
 reservationsRouter.post("/", async (req, res, next) => {
   try {
     const reservations = await getReservations();
@@ -171,20 +172,21 @@ reservationsRouter.post("/", async (req, res, next) => {
   }
 });
 
-reservationsRouter.put("/:id", (req, res) => {
-  const newReserve = reservationsDataRead.filter(
-    (u) => u._id !== req.params.id
-  );
-  const changeReserve = {
-    ...req.body,
-    _id: req.params.id,
-    createdAt: new Date(),
-  };
-  newReserve.push(changeReserve);
-  //   Place back
-  fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
-  res.send("Updated!!");
-});
+// issues with PUT
+// reservationsRouter.put("/:id", (req, res) => {
+//   const newReserve = reservationsDataRead.filter(
+//     (u) => u._id !== req.params.id
+//   );
+//   const changeReserve = {
+//     ...req.body,
+//     _id: req.params.id,
+//     createdAt: new Date(),
+//   };
+//   newReserve.push(changeReserve);
+//   //   Place back
+//   fs.writeFileSync(reservationsJSONPath, JSON.stringify(newReserve));
+//   res.send("Updated!!");
+// });
 
 reservationsRouter.delete("/:id", (req, res) => {
   const newReserve = reservationsDataRead.filter(
@@ -227,12 +229,12 @@ movieRouter.get("/:name", (req, res) => {
 movieRouter.post("/", (req, res) => {
   console.log(req.body);
   const newUser = { ...req.body, _id: uniqid(), createdAt: new Date() };
-  res.send(newUser);
 
   //  changing the file
   movieDataRead.push(newUser);
   console.log(movieDataRead);
   // writing the file back
   fs.writeFileSync(MovieJSONPath, JSON.stringify(movieDataRead));
+  res.send(newUser);
 });
 export { userRouter, reservationsRouter, movieRouter };
