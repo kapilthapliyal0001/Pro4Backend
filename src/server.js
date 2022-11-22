@@ -53,6 +53,7 @@ server.use(badRequestMiddleware);
 // showing the list end points table
 console.table(listEndpoints(server));
 
+// Check the basic function of the wire here:
 server.listen(port, () => {
   console.log("Your server is running on port " + port);
 });
